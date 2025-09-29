@@ -139,11 +139,11 @@ class AirtableHttpServer {
 
       try {
         // Get credentials from headers
-        const apiKey = req.headers['x-airtable-api-key'] as string;
-        const baseId = req.headers['x-airtable-base-id'] as string;
+        const apiKey = process.env.AIRTABLE_API_KEY as string;
+        const baseId = process.env.AIRTABLE_BASE_ID as string;
         
         if (!apiKey || !baseId) {
-          this.sendStreamResponse(res, requestId, 'error', null, 'Airtable API key and base ID required. Set x-airtable-api-key and x-airtable-base-id headers.');
+          this.sendStreamResponse(res, requestId, 'error', null, 'Server misconfigured. AIRTABLE_API_KEY and AIRTABLE_BASE_ID environment variables not set.');
           res.end();
           return;
         }
@@ -237,12 +237,12 @@ class AirtableHttpServer {
       });
 
       try {
-        // Get credentials from headers
-        const apiKey = req.headers['x-airtable-api-key'] as string;
-        const baseId = req.headers['x-airtable-base-id'] as string;
-        
-        if (!apiKey || !baseId) {
-          this.sendHttpStreamResponse(res, requestId, null, 'Airtable API key and base ID required. Set x-airtable-api-key and x-airtable-base-id headers.');
+  // Use credentials from environment variables only.
+  const apiKey = process.env.AIRTABLE_API_KEY as string;
+  const baseId = process.env.AIRTABLE_BASE_ID as string;
+
+  if (!apiKey || !baseId) {
+          this.sendHttpStreamResponse(res, requestId, null, 'Server misconfigured. AIRTABLE_API_KEY and AIRTABLE_BASE_ID environment variables not set.');
           res.end();
           return;
         }
@@ -322,13 +322,13 @@ class AirtableHttpServer {
     // Simple JSON endpoint (non-streaming)
     this.app.post('/mcp-json', async (req, res) => {
       try {
-        // Get credentials from headers
-        const apiKey = req.headers['x-airtable-api-key'] as string;
-        const baseId = req.headers['x-airtable-base-id'] as string;
-        
+  // Use credentials from environment variables only.
+  const apiKey = process.env.AIRTABLE_API_KEY as string;
+  const baseId = process.env.AIRTABLE_BASE_ID as string;
+
         if (!apiKey || !baseId) {
-          return res.status(400).json({ 
-            error: 'Airtable API key and base ID required. Set x-airtable-api-key and x-airtable-base-id headers.' 
+          return res.status(500).json({ 
+            error: 'Server misconfigured. AIRTABLE_API_KEY and AIRTABLE_BASE_ID environment variables not set.' 
           });
         }
 
@@ -418,12 +418,12 @@ class AirtableHttpServer {
       });
 
       try {
-        // Get credentials from headers
-        const apiKey = req.headers['x-airtable-api-key'] as string;
-        const baseId = req.headers['x-airtable-base-id'] as string;
-        
+  // Use credentials from environment variables only.
+  const apiKey = process.env.AIRTABLE_API_KEY as string;
+  const baseId = process.env.AIRTABLE_BASE_ID as string;
+
         if (!apiKey || !baseId) {
-          this.sendStreamResponse(res, requestId, 'error', null, 'Airtable API key and base ID required');
+          this.sendStreamResponse(res, requestId, 'error', null, 'Server misconfigured. AIRTABLE_API_KEY and AIRTABLE_BASE_ID environment variables not set.');
           res.end();
           return;
         }
